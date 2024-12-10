@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RAG Chat</title>
+</head>
+<body>
+    <h1>RAG Chat Interface</h1>
+    <div id="chat"></div>
+    <input type="text" id="question" placeholder="Ask something..." />
+    <button onclick="askQuestion()">Send</button>
+
+    <script>
+    async function askQuestion() {
+        const question = document.getElementById('question').value;
+
+        const response = await fetch('/ask', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ question: question })
+        });
+
+        const data = await response.json();
+        const chatDiv = document.getElementById('chat');
+        chatDiv.innerHTML += `<p><strong>You:</strong> ${question}</p><p><strong>Bot:</strong> ${data.answer}</p>`;
+        document.getElementById('question').value = '';
+    }
+    </script>
+</body>
+</html>
